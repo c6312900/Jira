@@ -1,7 +1,7 @@
 import {useEffect, useState } from "react";
 import {SearchPanel} from "./search-panel";
 import {List} from "./list";
-import {clearnObject} from "../../utils";
+import {clearnObject, useDebounce, useMount} from "../../utils";
 import * as qs from "qs";
 
 
@@ -15,26 +15,35 @@ export const ProjectListScreen = () => {
         name:'',
         personId:''
     })
+
+    const debounceParam = useDebounce(param,2000)
     const [list, setList] = useState([])
     
     useEffect(() => {
-      //name=${param.name} & personId=${param.personId}
-      fetch(`${apiUrl}/projects?${qs.stringify(clearnObject(param))}`).then(async response => {
+      //qs.stringify幫我我做的是把自動對應 name=${param.name} & personId=${param.personId},
+      //但有些欄位可能沒值,這會影響查詢結果,所以要clearnObject(debounceParam)把沒值的去掉
+      fetch(`${apiUrl}/projects?${qs.stringify(clearnObject(debounceParam))}`).then(async response => {
         if (response.ok) {
           setList(await response.json())          
         }
       })
-    },[param]) 
+    },[debounceParam])  // 當param變化時去取資料
 
-    useEffect(() => {
-        fetch(`${apiUrl}/users`).then(async response =>{
-            if (response.ok) {
-                setUsers (await response.json())                
-            }
-        })
-
-    },[])
-    // 當param變化時去取資料
+    // useEffect(() => {
+    //     fetch(`${apiUrl}/users`).then(async response =>{
+    //         if (response.ok) {
+    //             setUsers (await response.json())                
+    //         }
+    //     })
+    // },[]) //空數組是表示只在頁面加載時執行一次(組件加載時只執行一次)
+   
+    useMount(() => {
+      fetch(`${apiUrl}/users`).then(async response => {
+        if (response.ok) {
+          setUsers (await response.json())
+        }
+      })
+    })
 
     return <div>
         <SearchPanel users={users}  param={param} setParam={setParam}/>        
