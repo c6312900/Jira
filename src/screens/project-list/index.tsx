@@ -5,7 +5,7 @@ import {clearnObject, useDebounce, useMount} from "../../utils";
 import * as qs from "qs";
 
 
-const apiUrl = process.env.REACT_APP_API_URL // 'http://localhost:3001'
+const apiUrl = process.env.REACT_APP_API_URL;// 'http://localhost:3001'
 
 export const ProjectListScreen = () => {
     
@@ -16,7 +16,7 @@ export const ProjectListScreen = () => {
         personId:''
     })
 
-    const debounceParam = useDebounce(param,2000)
+    const debounceParam = useDebounce(param,500)
     const [list, setList] = useState([])
     
     useEffect(() => {
