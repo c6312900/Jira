@@ -6,6 +6,7 @@ export interface User {
   email: string;
   title: string;
   organization: string;
+  token: string;
 }
 
 interface SearchPanelProps {
@@ -13,6 +14,7 @@ interface SearchPanelProps {
   param: {
     name: string;
     personId: string;
+    
   };
   setParam: (param: SearchPanelProps["param"]) => void;
 }
