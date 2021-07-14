@@ -21,9 +21,8 @@ import { FormEvent } from "react";
 
 
 export const LoginScreen = () => {
-  const {login,user} = useAuth()
-  // const login = (param: { username: string; password: string }) => {
-    
+  const {login} = useAuth();
+  // const login = (param: {username: string; password: string }) => {    
   // };
 
   // HTMLFormElement extends Element
@@ -36,12 +35,6 @@ export const LoginScreen = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {
-        user? <div>
-          登入成功,用戶名:{user.name}<p/> 
-          token:{user.token}
-        </div> : null
-      }
       <div>
         <label htmlFor="username">用户名</label>
         <input type="text" id={"username"} />
