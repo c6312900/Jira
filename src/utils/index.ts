@@ -18,9 +18,11 @@ export const clearnObject = (object: object) => {
   return result
 }
 
+
 export const useMount = (callback: () => void ) => {
   useEffect(() =>{
     callback()
+    // eslint-disable-next-line
   },[]) //空數組是表示只在頁面加載時執行一次(或表示組件加載時只執行一次),
         //*****空數組這邊如果改加callback,會造成封包request一直送
 }

@@ -22,6 +22,7 @@ export const ProjectListScreen = () => {
     
     useEffect(() => {
       client("projects", {data: clearnObject(debouncedParam)}).then(setList)
+      // eslint-disable-next-line
     },[debouncedParam]); 
       //qs.stringify幫我我做的是把自動對應 name=${param.name} & personId=${param.personId},
       //但有些欄位可能沒值,這會影響查詢結果,所以要clearnObject(debounceParam)把沒值的去掉

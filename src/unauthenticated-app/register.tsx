@@ -23,7 +23,8 @@ export const RegisterScreen = () => {
       </div>
       <div>
         <label htmlFor="password">密码</label>
-        <input type="password" id={"password"} />
+        <input type="current-password" id={"password"} />
+        {/* <input type="password" id={"password"} /> */}
       </div>
       <button type={"submit"}>註冊</button>
     </form>
