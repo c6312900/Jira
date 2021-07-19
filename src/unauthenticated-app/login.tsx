@@ -1,6 +1,7 @@
-// import { login } from "auth-provider";
 import { useAuth } from "context/auth-context";
-import { FormEvent } from "react";
+import { Button, Form, Input } from "antd";
+// import { FormEvent } from "react";
+// import { login } from "auth-provider";
 // import { clearnObject } from "utils";
 
 // interface Base {
@@ -26,25 +27,30 @@ export const LoginScreen = () => {
   // };
 
   // HTMLFormElement extends Element
-  const handleSubmit = (event: FormEvent<HTMLFormElement> ) => {
-    event.preventDefault();
-    const username = (event.currentTarget.elements[0] as HTMLInputElement).value;
-    const password = (event.currentTarget.elements[1] as HTMLInputElement).value;
-    login({ username, password });
+  // const handleSubmit = (event: FormEvent<HTMLFormElement> ) => {
+  //   event.preventDefault();
+  //   const username = (event.currentTarget.elements[0] as HTMLInputElement).value;
+  //   const password = (event.currentTarget.elements[1] as HTMLInputElement).value;
+  //   login({ username, password });
+  // };
+
+  const handleSubmit = (values: { username: string; password: string }) => {
+    console.log(values);
+    login(values);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="username">用户名</label>
-        <input type="text" id={"username"} />
-      </div>
-      <div>
-        <label htmlFor="password">密码</label>
-        <input type="current-password" id={"password"} />
+    <Form onFinish={handleSubmit}>
+      <Form.Item name={'username'} rules={[{ required: true, message: "请输入用戶名" }]}>
+        {/* <label htmlFor="username">用户名</label> */}
+        <Input placeholder={'用户名'} type="text" id={"username"} />
+      </Form.Item>
+      <Form.Item name={'password'} rules={[{ required: true, message: "请输入密码" }]}>
+        {/* <label htmlFor="password">密码</label> */}
+        <Input placeholder={'密码'} type="current-password" id={"password"} />
         {/* <input type="password" id={"password"} /> */}
-      </div>
-      <button type={"submit"}>登入</button>
-    </form>
+      </Form.Item>
+      <Button htmlType={"submit"} type={"primary"}>登入</Button>
+    </Form>
   );
 };
