@@ -19,7 +19,7 @@ export const UnauthenticatedApp = () => {
           <Title>{isRegister ? "請註冊" : "請登入"}</Title>
           {isRegister?  <RegisterScreen/> : <LoginScreen/>}
           <Divider/>
-           <a onClick={() => setIsRegister(!isRegister)}>
+           <a href="/#" onClick={() => setIsRegister(!isRegister)}>
            {isRegister? '已經有帳號?直接登入' : '沒有帳號?註冊新帳號' }</a>
         </ShadowCard>
         
