@@ -1,4 +1,18 @@
-.App {
+html {
+   /* rem 和 em */
+  /*em 相对于父元素的font-size*/
+  /*rem 相对于根元素html的font-size, r就是root的意思*/
+  /*16 * 62.5% = 10px*/
+  /*1rem === 10px*/
+  font-size: 62.5%;
+}
+
+/*viewport height === vh 整個畫面是一個視口即(viewport) 1個VH等於1%的高度*/
+html body #root .App {
+  min-height: 100vh;
+}
+
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +49,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */

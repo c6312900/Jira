@@ -1,5 +1,6 @@
 import { useAuth } from "context/auth-context";
-import { Button, Form, Input } from "antd";
+import { Form, Input } from "antd";
+import { LongButton } from "unauthenticated-app";
 // import { FormEvent } from "react";
 // import { login } from "auth-provider";
 // import { clearnObject } from "utils";
@@ -50,7 +51,7 @@ export const LoginScreen = () => {
         <Input placeholder={'密码'} type="current-password" id={"password"} />
         {/* <input type="password" id={"password"} /> */}
       </Form.Item>
-      <Button htmlType={"submit"} type={"primary"}>登入</Button>
+      <LongButton htmlType={"submit"} type={"primary"}>登入</LongButton>
     </Form>
   );
 };
