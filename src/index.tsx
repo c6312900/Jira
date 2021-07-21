@@ -2,16 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {loadDevTools} from 'jira-dev-tool';
+import {DevTools, loadServer} from 'jira-dev-tool';
+// import {loadDevTools} from 'jira-dev-tool';
 //務必在jira-dev-tool後面引入
 import 'antd/dist/antd.less';
 import { AppProviders } from 'context';
 // import './index.css';
 
-loadDevTools(() =>
+// loadDevTools(() =>
+loadServer(() =>
 ReactDOM.render(
   <React.StrictMode>
     <AppProviders>
+    <DevTools />
       <App />
     </AppProviders>    
   </React.StrictMode>,

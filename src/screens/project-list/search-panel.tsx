@@ -1,6 +1,5 @@
+import { Form, Input, Select } from "antd";
 // import { useEffect, useState } from "react";
-
-import { Input, Select } from "antd";
 
 export interface User {
   id: string;
@@ -23,10 +22,11 @@ interface SearchPanelProps {
 
 export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
   return (
-    <form>
-      <div>
+    <Form style={{ marginBottom: "2rem" }} layout={"inline"}>
+      <Form.Item>
         {/*setParam(Object.assign({}, param, {name:evt.target.value}))*/}
         <Input
+          placeholder={"項目名"}
           type="text"
           value={param.name}
           onChange={(evt) =>
@@ -36,6 +36,8 @@ export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
             })
           }
         />
+        </Form.Item>
+        <Form.Item>
         <Select
           value={param.personId}
           onChange={(value) =>
@@ -61,7 +63,7 @@ export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
             </Select.Option>
           ))}
         </Select>
-      </div>
-    </form>
+        </Form.Item>     
+    </Form>
   );
 };

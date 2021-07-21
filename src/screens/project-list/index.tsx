@@ -3,6 +3,7 @@ import {SearchPanel} from "./search-panel";
 import {List} from "screens/project-list/list";
 import {clearnObject, useDebounce, useMount} from "../../utils";
 import { useHttp } from "utils/http";
+import styled from "@emotion/styled";
 // import * as qs from "qs";
 
 // const apiUrl = process.env.REACT_APP_API_URL; // 'http://localhost:3001'
@@ -22,7 +23,7 @@ export const ProjectListScreen = () => {
     
     useEffect(() => {
       client("projects", {data: clearnObject(debouncedParam)}).then(setList)
-      // eslint-disable-next-line
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     },[debouncedParam]); 
       //qs.stringify幫我我做的是把自動對應 name=${param.name} & personId=${param.personId},
       //但有些欄位可能沒值,這會影響查詢結果,所以要clearnObject(debounceParam)把沒值的去掉
@@ -50,8 +51,13 @@ export const ProjectListScreen = () => {
       // })
     })
 
-    return <div>
-        <SearchPanel users={users}  param={param} setParam={setParam}/>        
-        <List users={users} list={list}/>
-    </div>
+    return <Container>
+      <h1>項目列表</h1>
+      <SearchPanel users={users}  param={param} setParam={setParam}/>        
+      <List users={users} list={list}/>
+    </Container>
 }
+
+const Container = styled.div`
+  padding: 3.2rem;
+`;

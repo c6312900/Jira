@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react"
 
 export const isFalsy = (value: unknown) => value === 0 ? false : !value
+export const isVoid = (value: unknown) => value === undefined ||  value === null ||  value === ""
 
+// let c: object
+// c = {name: 'jack'}
+// c= () => {}
+// c= new RegExp('')
+// const c= {...(()=>{}) } 當let c: object這樣解構任何東西都是空數組,無意義的,因為object的範圍太大
+// let b: {[key: string]: unknown}
+// b = {name: 'jack'}
+// b= () => {}
 //在一個函數裡,改變傳入的對象是不好的,在這裡把它copy一份給result
-export const clearnObject = (object: object) => {
+export const clearnObject = (object: {[key: string]: unknown}) => {
    // Object.assign({},object)
     const result = {...object}
     Object.keys(result).forEach(key => {
         // value= 0 時也會delete .但他是有效數字,我們不想刪除
-        // @ts-ignore
         const value = result[key]
-        if (isFalsy(value)) {
-          // @ts-ignore  
+        if (isVoid(value)) {          
           delete result[key]
         }
     })
@@ -22,7 +29,8 @@ export const clearnObject = (object: object) => {
 export const useMount = (callback: () => void ) => {
   useEffect(() =>{
     callback()
-    // eslint-disable-next-line
+    // TODO 依赖项里加上callback会造成无限循环，这个和useCallback以及useMemo有关系
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]) //空數組是表示只在頁面加載時執行一次(或表示組件加載時只執行一次),
         //*****空數組這邊如果改加callback,會造成封包request一直送
 }
