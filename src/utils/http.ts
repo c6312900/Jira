@@ -93,7 +93,8 @@ export const useHttp = () => {
 //     name: string;
 //     age: number;
 //   };
-//   const xiaoMing: Partial<Person> = {}; //允許Person部分屬性
+//  const xiaoMing: Partial<Person> = {}; //允許Person部分屬性
+  
 //  // const shenMiRen: Omit<Person, "name"  > = {name: ''}; //排除不需要Person的屬性
 //   const shenMiRen1: Omit<Person, "name" | "age" > = {}; //排除不需要Person的屬性,但屬性全部排除,剩{},又變成全都可以
 //   type PersonKeys = keyof Person;

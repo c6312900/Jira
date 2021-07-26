@@ -1,9 +1,9 @@
 // import { render } from "@testing-library/react";
-import { Table } from "antd";
+import { Table, TableProps } from "antd";
 import dayjs from "dayjs";
 import { User } from "screens/project-list/search-panel";
 
-interface Project {
+export interface Project {
   id: string;
   name: string;
   personId: string;
@@ -12,13 +12,17 @@ interface Project {
   created: number;
 }
 
-interface ListProps {
-  list: Project[];
+//RecordType 表示table 中1筆資料的型別,例如:Project 或 User型別
+//TableProps代表table屬性(Props)的集合
+interface ListProps extends TableProps<Project> {
+ // list: Project[];
   users: User[];
 }
 
-export const List = ({ list, users }: ListProps) => {
-  return <Table rowKey={"id"}  pagination={false}  columns={[{
+export const List = ({users,...props }: ListProps) => {
+// export const List = ({ list, users }: ListProps) => {
+  return (
+  <Table rowKey={"id"}  pagination={false}  columns={[{
     title: '名稱',
     dataIndex: 'name',
     sorter:(a,b) => a.name.localeCompare(b.name)
@@ -42,7 +46,8 @@ export const List = ({ list, users }: ListProps) => {
         {project.created? dayjs(project.created).format('YYYY-MM-DD') : '無'}
       </span>
     }
-  }]}  dataSource={list} />
+  }]}  {...props} />
+  //}]}  dataSource={list} />
   // return (
   //   <table>
   //     <thead>
@@ -65,4 +70,4 @@ export const List = ({ list, users }: ListProps) => {
   //     </tbody>
   //   </table>
   // );
-};
+  )};
