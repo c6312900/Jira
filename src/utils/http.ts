@@ -47,7 +47,7 @@ export const http = async (endpoint:string, {data, token, headers, ...customConf
              if (response.ok) {
                  return data
              } else {
-                 return Promise.reject(data);
+                return Promise.reject(data);
              }
          })
 }

@@ -22,7 +22,8 @@ return fetch(`${apiUrl}/login`, {
         if (response.ok) {
           return handleUserResponse(await response.json())
         } else {
-          return Promise.reject(data)
+          return Promise.reject(await response.json())
+          //return Promise.reject(data)
         }
       });
 }
@@ -38,7 +39,8 @@ return fetch(`${apiUrl}/register`, {
         if (response.ok) {
             return handleUserResponse(await response.json())
         } else {
-          return Promise.reject(data)
+          return Promise.reject(await response.json())
+         // return Promise.reject(data)
         }
       });
 }
