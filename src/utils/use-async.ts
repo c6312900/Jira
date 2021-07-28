@@ -17,11 +17,12 @@ const defaultConfig = {
 }
 
 export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defaultConfig) => {
-     //解釋當你setState時,即是對initialState給值,例如:我只給data和stat,
+    
+    
+    //解釋當你setState時,即是對initialState給值,例如:我只給data和stat,
     //...initialState解構後為{stat: 'success', data: D} 只有2個元素,
     //還少1個error元素,這時透過解構...defaultIintialState,會預帶{error: null}
-    //所以最後...defaultIintialState解構後為{stat: 'success', data: D, error: null}
- 
+    //所以最後...defaultIintialState解構後為{stat: 'success', data: D, error: null} 
     const config = {...defaultConfig, ...initialConfig}
     const [state, setState] = useState<State<D>> ({
          ...defaultIintialState,

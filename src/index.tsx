@@ -13,7 +13,8 @@ import { AppProviders } from 'context';
 loadServer(() =>
 ReactDOM.render(
   <React.StrictMode>
-    <AppProviders>
+    {/* <DevTools />  可看成 <AppProviders> 下帶入的 children */}
+    <AppProviders> 
     <DevTools />
       <App />
     </AppProviders>    

@@ -3,6 +3,8 @@ import * as auth from "auth-provider";
 import { User } from "screens/project-list/search-panel";
 import { http } from "utils/http";
 import { useMount } from "utils";
+import { useAsync } from "utils/use-async";
+import { FullPageLoading, FullyPageErrorFallBack } from "components/lib";
 
 interface AuthForm {
     username: string;
@@ -34,16 +36,25 @@ AuthContext.displayName = 'AuthContex';
 
 //頁面加載時會觸發
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-   const [user, setUser] = useState<User | null>(null);
+  // const [user, setUser] = useState<User | null>(null);
+  const {data: user, error, isLoading, isIdle, isError, run, setData: setUser } = useAsync<User | null>()
+
                                             //user => setUser(user) 等於setUser 叫 point free
    const login = (form: AuthForm) => auth.login(form).then(setUser);
    const register = (form: AuthForm) => auth.register(form).then(setUser);
    const logout = () => auth.logout().then(user => setUser(null));
 
    useMount(() => {
-    bootstrapUser().then(setUser)
+    // bootstrapUser().then(setUser)
+     run(bootstrapUser())
    });
-   console.log('AuthProvider')
+
+   if (isIdle || isLoading) 
+   return <FullPageLoading/> 
+
+   if (isError) 
+   return <FullyPageErrorFallBack error={error}/>
+  
    return (<AuthContext.Provider children={children} value={{user, login, register, logout}} />);
 }
 
