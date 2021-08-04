@@ -16,6 +16,9 @@ export const UnauthenticatedApp = () => {
     {/* return <div style={{display:'flex', justifyContent:'center'}}> */}
      <Header/>
      <Background />
+       <Button  onClick={() => {
+         throw new Error('點擊拋出異常')
+       }}>拋出異常</Button>
         <ShadowCard>
           <Title>{isRegister ? "請註冊" : "請登入"}</Title>
           {error? <Typography.Text type={"danger"}>{error.message}</Typography.Text> : null }
