@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "screens/project-list/list";
-import { useDebounce} from "../../utils";
+import { useDebounce, useDocumentTitle} from "../../utils";
 import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProject } from "utils/project";
 import { useUsers } from "utils/user";
+//import { Helmet } from "react-helmet";
 //import {useEffect, useState } from "react";
 //import {List, Project} from "screens/project-list/list";
 //import {clearnObject, useDebounce, useMount} from "../../utils";
@@ -32,6 +33,7 @@ export const ProjectListScreen = () => {
     //const client = useHttp();
     const {isLoading, error, data: list} = useProject(debouncedParam);
     const { data: users} = useUsers();
+    
     // const {run, isLoading, error, data: list} = useAsync<Project[]>();
     
     // useEffect(() => {
@@ -74,8 +76,11 @@ export const ProjectListScreen = () => {
     //   //   }
     //   // })
     // })
-
+    useDocumentTitle('項目列表',false);
     return <Container>
+      {/* <Helmet>
+      <title>項目列表</title>
+      </Helmet> */}
       <h1>項目列表</h1>
       <SearchPanel users={users || []}  param={param} setParam={setParam}/> 
       {error? <Typography.Text type={"danger"}>{error.message}</Typography.Text> : null}       
