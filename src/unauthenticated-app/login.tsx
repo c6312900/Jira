@@ -40,7 +40,7 @@ export const LoginScreen = ({onError}: {onError: (error: Error) => void }) => {
   const handleSubmit = async (values: { username: string; password: string }) => {
     try {
     // await login(values); 
-     await  run(login(values));       
+    await  run(login(values));       
    } catch (e) {
      onError(e);
    }

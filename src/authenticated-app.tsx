@@ -1,10 +1,13 @@
 import { useAuth } from "context/auth-context";
 import { ProjectListScreen } from "screens/project-list";
+import { ProjectScreen } from "screens/project";
 import styled from "@emotion/styled";
 import { Row } from "components/lib";
 import { ReactComponent as Softwarelogo}  from 'assets/software-logo.svg';
 import { Button, Dropdown, Menu } from "antd";
-
+import { Route, Routes, Navigate} from 'react-router';
+import {BrowserRouter as Router} from 'react-router-dom'
+import { resetRoute } from "utils";
 /**
  * grid 和 flex 各自的应用场景
  * 1. 要考虑，是一维布局 还是 二维布局
@@ -18,38 +21,21 @@ import { Button, Dropdown, Menu } from "antd";
  */
 
 export const AuthenticatedApp = () => {
-    const {logout, user} = useAuth()
+   
     // const value: any = undefined  //
     return (
         <Container>
           {/* {value.notExist} */}
-          <Header between={true}>
-            <HeaderLeft gap={true}>
-              {/* <img src={Softwarelogo} alt="找不到圖片"/> */}
-              <Softwarelogo width={"18rem"} color={"rgb(38, 132, 255)"}></Softwarelogo>
-              <h2>项目</h2>
-              <h2>用户</h2>
-            </HeaderLeft>
-            <HeaderRight>
-              {/* <button onClick={logout}>登出</button> */}
-
-              <Dropdown
-               overlay={
-                <Menu>
-                  <Menu.Item key={"logout"}>
-                  <Button onClick={logout} type={"link"}>登出</Button>
-                    {/* <a onClick={logout} href="/#">登出</a> */}
-                  </Menu.Item>
-                </Menu>
-              }>
-                <Button type={"link"} onClick={(e) => e.preventDefault()}>Hi, {user?.name}</Button>
-               {/* <a onClick={(e) => e.preventDefault()} href="/#" >Hi, {user?.name}</a> */}
-               {/* < e.preventDefault() 防止頁面刷新> */}            
-              </Dropdown>
-            </HeaderRight>
-          </Header>
+          <PageHader/>
           <Main>
-            <ProjectListScreen />
+            <Router>           
+              <Routes>
+                {/* 可看utils/project.ts 內的 run(client("projects".... */}
+                 <Route path={'/projects'} element={<ProjectListScreen/>}/>
+                 <Route path={'/projects/:projectId/*'} element={<ProjectScreen/>}/>
+                 <Navigate to={'/projects'}/>
+              </Routes>
+            </Router> 
           </Main>
         </Container>
       );
@@ -57,6 +43,37 @@ export const AuthenticatedApp = () => {
     //     <button onClick={logout}>登出</button>
     //     <ProjectListScreen />
     // </div>
+}
+
+const PageHader = () => {
+  const {logout, user} = useAuth()
+    return <Header between={true}>
+    <HeaderLeft gap={true}>
+      {/* <img src={Softwarelogo} alt="找不到圖片"/> */}
+      <Button type={'link'} onClick={resetRoute} >
+        <Softwarelogo width={"18rem"} color={"rgb(38, 132, 255)"}></Softwarelogo>
+      </Button>      
+      <h2>项目</h2>
+      <h2>用户</h2>
+    </HeaderLeft>
+    <HeaderRight>
+      {/* <button onClick={logout}>登出</button> */}
+
+      <Dropdown
+       overlay={
+        <Menu>
+          <Menu.Item key={"logout"}>
+          <Button onClick={logout} type={"link"}>登出</Button>
+            {/* <a onClick={logout} href="/#">登出</a> */}
+          </Menu.Item>
+        </Menu>
+      }>
+        <Button type={"link"} onClick={(e) => e.preventDefault()}>Hi, {user?.name}</Button>
+       {/* <a onClick={(e) => e.preventDefault()} href="/#" >Hi, {user?.name}</a> */}
+       {/* < e.preventDefault() 防止頁面刷新> */}            
+      </Dropdown>
+    </HeaderRight>
+  </Header>
 }
 
 // const HeaderItem = styled.h3`

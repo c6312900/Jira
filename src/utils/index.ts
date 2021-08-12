@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export const isFalsy = (value: unknown) => value === 0 ? false : !value
 export const isVoid = (value: unknown) => value === undefined ||  value === null ||  value === ""
@@ -90,18 +90,29 @@ export const useArray = <T>(initialArray: T[]) => {
 };
 
 export const useDocumentTitle = (title:string, keepOnUnmount:boolean = true) => {
-  const oldTitle = document.title
-  
-  console.log('render時oldTitle',oldTitle)
+  const oldTitle = useRef(document.title).current; //讀取的值在hook生命週期內永遠不會變 
+  //const oldTitle = document.title
+  // 頁面加载时: 舊title 'React App'
+  // 加载后：新title
+
+
+ // console.log('render時oldTitle',oldTitle)
   useEffect(() => {
       document.title = title 
   },[title])
-
+  
+   //重要當useEffect 後面是[] 時代表頁面卸載時觸發,例如切換其他頁面或reflesh
+   //但若[title]時表示title改變時觸發
   useEffect(() => {
       return () => { 
         if (!keepOnUnmount) {
-          console.log('unmount時oldTitle',oldTitle)
+        //  console.log('unmount時oldTitle',oldTitle)
+
+       // 如果不指定依赖[]，讀到的永遠是舊title,因為一個function包含另一個function,外層function有const(oldTitle)或let,
+       //內層functionu有用到時要注意(閉包),永遠只讀到第一次的const(oldTitle)值,可看test範例
       document.title = oldTitle 
     }
-  }} ,[])
+  }} ,[keepOnUnmount,oldTitle])
 }
+
+export const resetRoute = () => window.location.href= window.location.origin

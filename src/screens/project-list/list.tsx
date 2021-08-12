@@ -1,6 +1,9 @@
 // import { render } from "@testing-library/react";
 import { Table, TableProps } from "antd";
 import dayjs from "dayjs";
+//react-router和react-router-dom關係類似 react 和react-native/react-dom/react-vr....
+//react 核心庫處理虛擬的,邏輯,計算...等例如useEffect,useState...等怎麼去影響dom 見8-3 9:00
+import { Link } from "react-router-dom";
 import { User } from "screens/project-list/search-panel";
 
 export interface Project {
@@ -24,8 +27,11 @@ export const List = ({users,...props }: ListProps) => {
   return (
   <Table rowKey={"id"}  pagination={false}  columns={[{
     title: '名稱',
-    dataIndex: 'name',
-    sorter:(a,b) => a.name.localeCompare(b.name)
+    // dataIndex: 'name',
+    sorter:(a,b) => a.name.localeCompare(b.name),
+    render(value, project) {
+      return <Link to={String(project.id)}>{project.name}</Link>
+    }
   },{
     title: '部門',
     dataIndex: 'organization',
