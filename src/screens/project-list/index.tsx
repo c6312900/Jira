@@ -1,4 +1,4 @@
-import { useState } from "react";
+//import { useState } from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "screens/project-list/list";
 import { useDebounce, useDocumentTitle} from "../../utils";
@@ -6,6 +6,8 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProject } from "utils/project";
 import { useUsers } from "utils/user";
+import { useUrlQueryParam } from "utils/url";
+
 //import { Test } from "./test";
 //import { Helmet } from "react-helmet";
 //import {useEffect, useState } from "react";
@@ -18,17 +20,20 @@ import { useUsers } from "utils/user";
 // const apiUrl = process.env.REACT_APP_API_URL; // 'http://localhost:3001'
 
 export const ProjectListScreen = () => {
-    
+  
     // const [users, setUsers] = useState([])
     // const [isLoading, setIsLoading] = useState(false)
     // const [error, setError] = useState<null | Error>(null)
-
-    //param 通常只會只有1組值,因為不管選取或輸入文字都是只有1組name和personId,不是陣列,把他想成查詢條件
-    const [param, setParam] = useState({
-        name:"",
-        personId:""
-    })
-
+     
+   // const [keys] = useState<('name'|'personId')[]>(['name','personId'])
+   // const [param, setParam] = useUrlQueryParam(keys)
+    
+   //基本类型，可以放到依赖里；组件状态，可以放到依赖里；非组件状态的对象，绝不可以放到依赖里
+     //https://codesandbox.io/s/keen-wave-tlz9s?file=/src/App.js 
+     //param 通常只會只有1組值,因為不管選取或輸入文字都是只有1組name和personId,不是陣列,把他想成查詢條件
+    const [param, setParam] = useUrlQueryParam(['name','personId'])
+    //推論param每次都創建一個新的對象才造成useDebounce 內的useEffect 一直觸發,造成頁面一直渲染,可看8-6 8:16
+    //去查useUrlQueryParam內的reduce
     const debouncedParam = useDebounce(param,200);
     // const [list, setList] = useState([]);
     //const client = useHttp();
@@ -77,7 +82,11 @@ export const ProjectListScreen = () => {
     //   //   }
     //   // })
     // })
+    
     useDocumentTitle('項目列表',false);
+    //useUrlQueryParam(['random']);
+    console.log(useUrlQueryParam(['name']));
+  //  console.log(useUrlQueryParam(['personid']));
     return <Container>
       {/* <Test/> */}
       {/* <Helmet>
@@ -89,6 +98,14 @@ export const ProjectListScreen = () => {
       <List loading={isLoading} users={users || []} dataSource={list || []}/>
     </Container>
 }
+
+//function Component寫法
+ProjectListScreen.whyDidYouRender = true;
+
+//class Component寫法
+// class test extends Component<any,any> {
+//   static whyDidYouRender = true
+// }
 
 const Container = styled.div`
   padding: 3.2rem;

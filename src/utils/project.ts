@@ -10,6 +10,7 @@ export const useProject = (param?: Partial<Project>) => {
      
     useEffect(() => {
         run(client("projects", {data: clearnObject(param || {})}))
+       // eslint-disable-next-line
     },[param]); 
 
     return result
