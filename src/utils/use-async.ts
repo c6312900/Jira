@@ -28,7 +28,11 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
          ...defaultIintialState,
          ...initialState
     })
-        
+    // useState直接传入函数的含意是：惰性初始化；所以，要用useState保存函数，不能直接传入函数
+    // https://codesandbox.io/s/blissful-water-230u4?file=/src/App.js
+    const [retry, setRetry] = useState(() => () => {});
+   // const [retry, setRetry] = useState(() => {});
+   // let retry = () => {} 這種寫法是錯誤的,因為每次渲染時retry變數都要重新定義一次,要用useState保留變數狀態
     const setData = (data: D) => setState({
        stat: 'success',
        data,
@@ -41,10 +45,18 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
        error
     })
 
-    const run = (promise: Promise<D>) => {
+    const run = (promise: Promise<D>, runConfig?: {retry: () => Promise<D> }) => {
         if (!promise || !promise.then) {
             throw new Error('請傳入 Promise 類型數據')
         }
+       
+        //setRetry因為使用useState,會將函數保留下來() => run(promise) ,因此promise也會保留下來
+        setRetry(() => () => {
+            if (runConfig?.retry) {
+                run(runConfig?.retry(), runConfig)
+            }            
+          //  run(promise)
+        }); 
         setState({...state, stat: 'loading'})
 
         return promise.then((data) => {
@@ -67,6 +79,8 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
         run,
         setData,
         setError,
+        // retry 被调用时重新跑一遍run，會觸發setState讓state刷新一遍,state刷新讓useAsync組件重跑一遍
+        retry,
         ...state
     }
 }

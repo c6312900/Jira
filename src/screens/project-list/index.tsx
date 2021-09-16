@@ -7,6 +7,8 @@ import { Typography } from "antd";
 import { useProject } from "utils/project";
 import { useUsers } from "utils/user";
 import { useUrlQueryParam } from "utils/url";
+//import { useSearchParams } from "react-router-dom";
+import { useProjectSearchParams } from "./util";
 
 //import { Test } from "./test";
 //import { Helmet } from "react-helmet";
@@ -31,13 +33,15 @@ export const ProjectListScreen = () => {
    //基本类型，可以放到依赖里；组件状态，可以放到依赖里；非组件状态的对象，绝不可以放到依赖里
      //https://codesandbox.io/s/keen-wave-tlz9s?file=/src/App.js 
      //param 通常只會只有1組值,因為不管選取或輸入文字都是只有1組name和personId,不是陣列,把他想成查詢條件
-    const [param, setParam] = useUrlQueryParam(['name','personId'])
+    // const [param, setParam] = useUrlQueryParam(['name','personId'])
     //推論param每次都創建一個新的對象才造成useDebounce 內的useEffect 一直觸發,造成頁面一直渲染,可看8-6 8:16
     //去查useUrlQueryParam內的reduce
-    const debouncedParam = useDebounce(param,200);
+    // const projectsParam = {...param, personId: Number(param.personId) || undefined } 
+    const [param, setParam] = useProjectSearchParams()
+   // const debouncedParam = useDebounce(projectsParam,200);
     // const [list, setList] = useState([]);
     //const client = useHttp();
-    const {isLoading, error, data: list} = useProject(debouncedParam);
+    const {isLoading, error, data: list, retry} = useProject(useDebounce(param,200));
     const { data: users} = useUsers();
     
     // const {run, isLoading, error, data: list} = useAsync<Project[]>();
@@ -95,12 +99,12 @@ export const ProjectListScreen = () => {
       <h1>項目列表</h1>
       <SearchPanel users={users || []}  param={param} setParam={setParam}/> 
       {error? <Typography.Text type={"danger"}>{error.message}</Typography.Text> : null}       
-      <List loading={isLoading} users={users || []} dataSource={list || []}/>
+      <List refresh={retry} loading={isLoading} users={users || []} dataSource={list || []}/>
     </Container>
 }
 
 //function Component寫法
-ProjectListScreen.whyDidYouRender = true;
+ProjectListScreen.whyDidYouRender = false;
 
 //class Component寫法
 // class test extends Component<any,any> {

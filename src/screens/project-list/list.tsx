@@ -1,15 +1,17 @@
 // import { render } from "@testing-library/react";
 import { Table, TableProps } from "antd";
+import { Pin } from "components/pin";
 import dayjs from "dayjs";
 //react-router和react-router-dom關係類似 react 和react-native/react-dom/react-vr....
 //react 核心庫處理虛擬的,邏輯,計算...等例如useEffect,useState...等怎麼去影響dom 見8-3 9:00
 import { Link } from "react-router-dom";
 import { User } from "screens/project-list/search-panel";
+import { useEditProject } from "utils/project";
 
 export interface Project {
-  id: string;
+  id: number;
   name: string;
-  personId: string;
+  personId: number;
   pin: boolean;
   organization: string;
   created: number;
@@ -20,12 +22,34 @@ export interface Project {
 interface ListProps extends TableProps<Project> {
  // list: Project[];
   users: User[];
+  refresh?: () => void;
 }
 
 export const List = ({users,...props }: ListProps) => {
+  const {mutate} = useEditProject()
+  //2個參數獲取時間不一樣,先取得project.id,再取得pin 見9-3 15:00
+  const pinProject = (id:number) => (pin:boolean) => mutate({id, pin}).then(props.refresh)
+  //const pinProject = (id:number, pin:boolean) => mutate({id, pin})
 // export const List = ({ list, users }: ListProps) => {
   return (
-  <Table rowKey={"id"}  pagination={false}  columns={[{
+  <Table rowKey={"id"}  
+    pagination={false}  
+    columns={[
+    {
+      title: <Pin checked={true} disabled={true} />,
+      render(value, project) {
+        return <Pin checked={project.pin}  onCheckedChange={
+          pinProject(project.id)  //為什麼這邊不用給pin,因為onCheckedChange會自帶pin進來,
+          //如:onCheckedChange= {pin => {pinProject((project.id), pin)}}
+        
+          //   pin => {
+        //   // useEditProject(project.id,{pin: true}) Hook不可在function內使用,只能在最外層見9-3 11:00
+        //   pinProject((project.id), pin) //2個參數獲取時間不一樣,先取得project.id,再取得pin 見9-3 15:00
+        // }
+      } />
+      }
+    },
+    {
     title: '名稱',
     // dataIndex: 'name',
     sorter:(a,b) => a.name.localeCompare(b.name),

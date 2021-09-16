@@ -1,5 +1,6 @@
 import { useMemo } from "react"
-import { useSearchParams } from "react-router-dom"
+import { URLSearchParamsInit, useSearchParams } from "react-router-dom"
+import { clearnObject } from "utils"
 
 //可參考8-5初步实现 useUrlQueryParam 管理 URL 参数状态 09:00
 export const useUrlQueryParam = <k extends string>(keys: k[]) => {
@@ -18,7 +19,16 @@ export const useUrlQueryParam = <k extends string>(keys: k[]) => {
         // eslint-disable-next-line
         [searchParams]), 
       // [searchParams,keys]), //加入keys會造成無限循環     
-        setSearchParam
+      (params: Partial<{ [key in k]: unknown }>) => {
+              // iterator
+              // iterator: https://codesandbox.io/s/upbeat-wood-bum3j?file=/src/index.js
+              //[] 數組 , {} 對象 , map 有部署iterator 可用for...of 遍歷 見8-7 3:00
+              const o = clearnObject({
+               ...Object.fromEntries(searchParams),
+                ...params,
+              }) as URLSearchParamsInit;
+              return setSearchParam(o);
+            },
     ] as const
     // console.log(searchParams.get('name'))
     
