@@ -115,4 +115,22 @@ export const useDocumentTitle = (title:string, keepOnUnmount:boolean = true) => 
   }} ,[keepOnUnmount,oldTitle])
 }
 
+//返回組件的掛載狀態,如果還沒掛載或已經卸載返回false,否則為true
+export const useMounteRef = () => {
+  //useRef 會記錄mountedRef這個變數,預設值給false,mountedRef.current代表這個變數目前的值
+  //可參考https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/react-optimize-performance-using-memo-usecallback-usememo-a76b6b272df3
+   const  mountedRef = useRef(false)  
+   //useEffect 在頁面加載後被調用 mountedRef.current = true ,卸載後才會return mountedRef.current = false
+   useEffect(() => {
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
+    }
+   })
+
+   return mountedRef
+}
+
 export const resetRoute = () => window.location.href= window.location.origin
+
+

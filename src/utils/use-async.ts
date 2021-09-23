@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
+import { useMounteRef } from "utils"
 
 interface State<D> {
     error: Error | null,
@@ -28,24 +29,27 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
          ...defaultIintialState,
          ...initialState
     })
+
+     const mounteRef = useMounteRef()
+
     // useState直接传入函数的含意是：惰性初始化；所以，要用useState保存函数，不能直接传入函数
     // https://codesandbox.io/s/blissful-water-230u4?file=/src/App.js
     const [retry, setRetry] = useState(() => () => {});
    // const [retry, setRetry] = useState(() => {});
    // let retry = () => {} 這種寫法是錯誤的,因為每次渲染時retry變數都要重新定義一次,要用useState保留變數狀態
-    const setData = (data: D) => setState({
+    const setData = useCallback((data: D) => setState({
        stat: 'success',
        data,
        error: null 
-    })
+    }),[])
 
-    const setError = (error: Error) => setState({
+    const setError =useCallback( (error: Error) => setState({
        stat: 'error',
        data: null,
        error
-    })
+    }),[])
 
-    const run = (promise: Promise<D>, runConfig?: {retry: () => Promise<D> }) => {
+    const run =useCallback((promise: Promise<D>, runConfig?: {retry: () => Promise<D> }) => {
         if (!promise || !promise.then) {
             throw new Error('請傳入 Promise 類型數據')
         }
@@ -57,10 +61,11 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
             }            
           //  run(promise)
         }); 
-        setState({...state, stat: 'loading'})
-
+        //setState({...state, stat: 'loading'}) 改成以下
+        setState(prevState => ({...prevState, stat: 'loading'})) 
         return promise.then((data) => {
-            setData(data)
+            if (mounteRef.current) //組件被掛載,另組件也非卸載狀態
+              setData(data);
             return data
         }).catch((error) => {
             //catch會攔截異常,導致更外層try catch時攔截不到異常
@@ -69,7 +74,7 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
            if (config.throwOnError) return Promise.reject(error);
            return error;           
         })
-    }
+    },[config.throwOnError, mounteRef, setData, setError]) 
 
     return {
         isIdle: state.stat === 'idle',
