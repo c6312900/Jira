@@ -8,6 +8,9 @@ import { Button, Dropdown, Menu } from "antd";
 import { Route, Routes, Navigate} from 'react-router';
 import {BrowserRouter as Router} from 'react-router-dom'
 import { resetRoute } from "utils";
+import { useState } from "react";
+import { ProjectModal } from "screens/project-list/project-modal";
+import { ProjectPopover } from "components/project-popover";
 /**
  * grid 和 flex 各自的应用场景
  * 1. 要考虑，是一维布局 还是 二维布局
@@ -21,12 +24,13 @@ import { resetRoute } from "utils";
  */
 
 export const AuthenticatedApp = () => {
-   
+     const [projectModalOpen, setProjectModalOpen] = useState(false)
     // const value: any = undefined  //
     return (
         <Container>
           {/* {value.notExist} */}
           <PageHader/>
+          {/* <Button onClick={() => setProjectModalOpen(true)}>打開</Button> */}
           <Main>
             <Router>           
               <Routes>
@@ -37,6 +41,7 @@ export const AuthenticatedApp = () => {
               </Routes>
             </Router> 
           </Main>
+          <ProjectModal projectModalOpen={projectModalOpen} onClose={() => setProjectModalOpen(false)} />
         </Container>
       );
     // return <div>
@@ -46,20 +51,33 @@ export const AuthenticatedApp = () => {
 }
 
 const PageHader = () => {
-  const {logout, user} = useAuth()
+  
     return <Header between={true}>
     <HeaderLeft gap={true}>
       {/* <img src={Softwarelogo} alt="找不到圖片"/> */}
-      <Button type={'link'} onClick={resetRoute} >
+      <Button style={{padding: 0}} type={'link'} onClick={resetRoute} >
         <Softwarelogo width={"18rem"} color={"rgb(38, 132, 255)"}></Softwarelogo>
       </Button>      
-      <h2>项目</h2>
-      <h2>用户</h2>
+      {/* <h2>项目</h2> */}
+      <ProjectPopover/>
+      <span>用户</span>
     </HeaderLeft>
     <HeaderRight>
       {/* <button onClick={logout}>登出</button> */}
+      <User/>
+      
+    </HeaderRight>
+  </Header>
+}
 
-      <Dropdown
+// const HeaderItem = styled.h3`
+//   margin-right: 3rem;
+// `;
+
+//var 有變量提昇,let和const 沒有看10-2 2:00 temporal dead zone 暫時性死區
+const User = () => {
+ const {logout, user} = useAuth()
+ return <Dropdown
        overlay={
         <Menu>
           <Menu.Item key={"logout"}>
@@ -72,13 +90,7 @@ const PageHader = () => {
        {/* <a onClick={(e) => e.preventDefault()} href="/#" >Hi, {user?.name}</a> */}
        {/* < e.preventDefault() 防止頁面刷新> */}            
       </Dropdown>
-    </HeaderRight>
-  </Header>
 }
-
-// const HeaderItem = styled.h3`
-//   margin-right: 3rem;
-// `;
 
 const Container = styled.div`
   display: grid;
