@@ -3,12 +3,13 @@ import { SearchPanel } from "./search-panel";
 import { List } from "screens/project-list/list";
 import { useDebounce, useDocumentTitle} from "../../utils";
 import styled from "@emotion/styled";
-import { Typography } from "antd";
+import { Button, Typography } from "antd";
 import { useProject } from "utils/project";
 import { useUsers } from "utils/user";
 import { useUrlQueryParam } from "utils/url";
 //import { useSearchParams } from "react-router-dom";
 import { useProjectSearchParams } from "./util";
+import { Row } from "components/lib";
 
 //import { Test } from "./test";
 //import { Helmet } from "react-helmet";
@@ -21,7 +22,7 @@ import { useProjectSearchParams } from "./util";
 
 // const apiUrl = process.env.REACT_APP_API_URL; // 'http://localhost:3001'
 
-export const ProjectListScreen = () => {
+export const ProjectListScreen = (props: {setProjectModalOpen: (isOpen: boolean) => void}) => {
   
     // const [users, setUsers] = useState([])
     // const [isLoading, setIsLoading] = useState(false)
@@ -96,10 +97,13 @@ export const ProjectListScreen = () => {
       {/* <Helmet>
       <title>項目列表</title>
       </Helmet> */}
+      <Row between= {true}>
       <h1>項目列表</h1>
+      <Button onClick={() => props.setProjectModalOpen(true)}>創建項目</Button>
+      </Row>      
       <SearchPanel users={users || []}  param={param} setParam={setParam}/> 
       {error? <Typography.Text type={"danger"}>{error.message}</Typography.Text> : null}       
-      <List refresh={retry} loading={isLoading} users={users || []} dataSource={list || []}/>
+      <List setProjectModalOpen={props.setProjectModalOpen} refresh={retry} loading={isLoading} users={users || []} dataSource={list || []}/>
     </Container>
 }
 

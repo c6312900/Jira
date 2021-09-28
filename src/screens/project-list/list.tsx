@@ -1,7 +1,9 @@
 // import { render } from "@testing-library/react";
-import { Table, TableProps } from "antd";
+import { Dropdown, Menu, Table, TableProps } from "antd";
+import { ButtonNoPadding } from "components/lib";
 import { Pin } from "components/pin";
 import dayjs from "dayjs";
+import { memoryUsage } from "process";
 //react-router和react-router-dom關係類似 react 和react-native/react-dom/react-vr....
 //react 核心庫處理虛擬的,邏輯,計算...等例如useEffect,useState...等怎麼去影響dom 見8-3 9:00
 import { Link } from "react-router-dom";
@@ -23,6 +25,7 @@ interface ListProps extends TableProps<Project> {
  // list: Project[];
   users: User[];
   refresh?: () => void;
+  setProjectModalOpen: (isOpen: boolean) => void
 }
 
 export const List = ({users,...props }: ListProps) => {
@@ -76,7 +79,21 @@ export const List = ({users,...props }: ListProps) => {
         {project.created? dayjs(project.created).format('YYYY-MM-DD') : '無'}
       </span>
     }
-  }]}  {...props} />
+  },
+  {
+   render(value,project) {
+     return <Dropdown overlay= { <Menu>
+       <Menu.Item key={"edit"}>
+        <ButtonNoPadding type={"link"} onClick={() => props.setProjectModalOpen(true)}>編輯</ButtonNoPadding>
+       </Menu.Item>
+     </Menu>
+
+     } >
+       <ButtonNoPadding type={"link"}>...</ButtonNoPadding>
+     </Dropdown>
+   }
+  }
+]}  {...props} />
   //}]}  dataSource={list} />
   // return (
   //   <table>
