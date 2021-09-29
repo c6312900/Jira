@@ -30,13 +30,29 @@ export const AuthenticatedApp = () => {
     return (
         <Container>
           {/* {value.notExist} */}
-          <PageHader setProjectModalOpen = {setProjectModalOpen}/>
+
+          {/* <PageHader  setProjectModalOpen = {setProjectModalOpen}/> */}
+          <PageHader projectButton = {
+            <ButtonNoPadding 
+            onClick={() => setProjectModalOpen(true)} 
+            type={"link"}>
+                創建項目
+          </ButtonNoPadding>
+          } />
+
           {/* <Button onClick={() => setProjectModalOpen(true)}>打開</Button> */}
           <Main>
             <Router>           
               <Routes>
                 {/* 可看utils/project.ts 內的 run(client("projects".... */}
-                 <Route path={'/projects'} element={<ProjectListScreen setProjectModalOpen = {setProjectModalOpen}/>}/>
+                {/* <Route path={'/projects'} element={<ProjectListScreen setProjectModalOpen = {setProjectModalOpen}/>}/> */}
+                 <Route path={'/projects'} element={<ProjectListScreen projectButton = {
+                                                                        <ButtonNoPadding 
+                                                                           onClick={() => setProjectModalOpen(true)} 
+                                                                           type={"link"}>
+                                                                             創建項目
+                                                                        </ButtonNoPadding>
+                                                                        }/>}/>
                  <Route path={'/projects/:projectId/*'} element={<ProjectScreen />}/>
                  <Navigate to={'/projects'}/>
               </Routes>
@@ -51,7 +67,8 @@ export const AuthenticatedApp = () => {
     // </div>
 }
 
-const PageHader = (props:{setProjectModalOpen: (isOpen: boolean) => void}) => {
+                   //props:{setProjectModalOpen: (isOpen: boolean) => void}
+const PageHader = (props:{projectButton: JSX.Element}) => {
   
     return <Header between={true}>
     <HeaderLeft gap={true}>
@@ -60,7 +77,8 @@ const PageHader = (props:{setProjectModalOpen: (isOpen: boolean) => void}) => {
         <Softwarelogo width={"18rem"} color={"rgb(38, 132, 255)"}></Softwarelogo>
       </ButtonNoPadding>      
       {/* <h2>项目</h2> */}
-      <ProjectPopover setProjectModalOpen={props.setProjectModalOpen} />
+      {/* <ProjectPopover setProjectModalOpen={props.setProjectModalOpen} /> */}
+      <ProjectPopover {...props} />
       <span>用户</span>
     </HeaderLeft>
     <HeaderRight>
