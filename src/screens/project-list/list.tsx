@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { User } from "screens/project-list/search-panel";
 import { useEditProject } from "utils/project";
+import { useProjectModal } from "./util";
 
 export interface Project {
   id: number;
@@ -25,11 +26,12 @@ interface ListProps extends TableProps<Project> {
  // list: Project[];
   users: User[];
   refresh?: () => void;
-  projectButton: JSX.Element
+ // projectButton: JSX.Element
   //setProjectModalOpen: (isOpen: boolean) => void
 }
 
 export const List = ({users,...props }: ListProps) => {
+  const {open} = useProjectModal()
   const {mutate} = useEditProject()
   //2個參數獲取時間不一樣,先取得project.id,再取得pin 見9-3 15:00
   const pinProject = (id:number) => (pin:boolean) => mutate({id, pin}).then(props.refresh)
@@ -62,8 +64,7 @@ export const List = ({users,...props }: ListProps) => {
     }
   },{
     title: '部門',
-    dataIndex: 'organization',
-    
+    dataIndex: 'organization',    
   }
   ,{
     title: '負責人',
@@ -84,12 +85,12 @@ export const List = ({users,...props }: ListProps) => {
   {
    render(value,project) {
      return <Dropdown overlay= { <Menu>
-       <Menu.Item key={"edit"}>
+       <Menu.Item key={"edit"}  >
         {/* <ButtonNoPadding type={"link"} onClick={() => props.setProjectModalOpen(true)}>編輯</ButtonNoPadding> */}
-        {props.projectButton}
-       </Menu.Item>
+        {/* {props.projectButton} */}
+       
+        </Menu.Item >
      </Menu>
-
      } >
        <ButtonNoPadding type={"link"}>...</ButtonNoPadding>
      </Dropdown>
