@@ -3,13 +3,13 @@ import { SearchPanel } from "./search-panel";
 import { List } from "screens/project-list/list";
 import { useDebounce, useDocumentTitle} from "../../utils";
 import styled from "@emotion/styled";
-import { Typography } from "antd";
+//import { Typography } from "antd";
 import { useProject } from "utils/project";
 import { useUsers } from "utils/user";
 import { useUrlQueryParam } from "utils/url";
 //import { useSearchParams } from "react-router-dom";
 import { useProjectModal, useProjectSearchParams } from "./util";
-import { ButtonNoPadding, Row } from "components/lib";
+import { ButtonNoPadding, ErrorBox, Row } from "components/lib";
 
 //import { Test } from "./test";
 //import { Helmet } from "react-helmet";
@@ -42,7 +42,8 @@ export const ProjectListScreen = () => {
    // const debouncedParam = useDebounce(projectsParam,200);
     // const [list, setList] = useState([]);
     //const client = useHttp();
-    const {isLoading, error, data: list, retry} = useProject(useDebounce(param,200));
+   // const {isLoading, error, data: list, retry} = useProject(useDebounce(param,200));
+   const {isLoading, error, data: list } = useProject(useDebounce(param,200));
     const { data: users} = useUsers();
 
     // const {run, isLoading, error, data: list} = useAsync<Project[]>();
@@ -109,7 +110,8 @@ export const ProjectListScreen = () => {
       </ButtonNoPadding>
       </Row>
       <SearchPanel users={users || []}  param={param} setParam={setParam}/>
-      {error? <Typography.Text type={"danger"}>{error.message}</Typography.Text> : null}
+      <ErrorBox error = {error} />
+      {/* {error? <Typography.Text type={"danger"}>{error.message}</Typography.Text> : null} */}
       {/* <List setProjectModalOpen={props.setProjectModalOpen} refresh={retry} loading={isLoading} users={users || []} dataSource={list || []}/>    */}
       
       {/* <List
@@ -119,8 +121,13 @@ export const ProjectListScreen = () => {
         users={users || []}
         dataSource={list || []}
       /> */}
-        <List
+        {/* <List
         refresh={retry}
+        loading={isLoading}
+        users={users || []}
+        dataSource={list || []}
+      /> */}
+      <List
         loading={isLoading}
         users={users || []}
         dataSource={list || []}

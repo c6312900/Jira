@@ -7,6 +7,7 @@ import logo from "assets/logo.svg";
 import left from "assets/left.svg";
 import right from "assets/right.svg";
 import { useDocumentTitle } from "utils";
+import { ErrorBox } from "components/lib";
 //import {Helmet} from "react-helmet";
 
 export const UnauthenticatedApp = () => {
@@ -27,7 +28,8 @@ export const UnauthenticatedApp = () => {
        }}>拋出異常</Button> */}
         <ShadowCard>
           <Title>{isRegister ? "請註冊" : "請登入"}</Title>
-          {error? <Typography.Text type={"danger"}>{error.message}</Typography.Text> : null }
+          <ErrorBox error={error} />
+          {/* {error? <Typography.Text type={"danger"}>{error.message}</Typography.Text> : null } */}
           {isRegister?  <RegisterScreen onError={setError}/> : <LoginScreen onError={setError}/>}
           <Divider/>
           <Button type={"link"} onClick={() => setIsRegister(!isRegister)}>

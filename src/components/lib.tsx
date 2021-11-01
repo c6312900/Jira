@@ -34,9 +34,24 @@ export const FullPageLoading = () => <FullPage>
 </FullPage>
 
 export const FullyPageErrorFallBack = ({error}:{error: Error | null}) => <FullPage>
-  <DevTools />
-<Typography.Text type={'danger'}>{error?.message}</Typography.Text>
+ <DevTools />
+{/* <Typography.Text type={'danger'}>{error?.message}</Typography.Text> */}
+<ErrorBox error = {error} />
 </FullPage>
+
+//此種方式可在undefine使用,不可在unknown上使用
+//export const ErrorBox = ({error} : {error?: {message: string} }) => {  
+ // if (error?.message) {
+
+//另一種方式類型守衛, 當value?.message為true時 value is Error類型
+const isError = (value: any): value is Error => value?.message
+
+export const ErrorBox = ({error} : {error: unknown}) => {
+   if (isError(error)) {
+     return <Typography.Text type={'danger'}>{error?.message}</Typography.Text>
+   }
+   return null
+}
 
 export const ButtonNoPadding =  styled(Button)`
  padding: 0 ;

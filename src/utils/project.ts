@@ -1,27 +1,36 @@
-import { useCallback, useEffect } from "react";
+//import { useCallback, useEffect } from "react";
+import { useQuery } from "react-query";
 import { Project } from "screens/project-list/list";
-import { clearnObject } from "utils";
+//import { clearnObject } from "utils";
 import { useHttp } from "./http";
 import { useAsync } from "./use-async";
 
-export const useProject = (param?: Partial<Project>) => {
-    const client = useHttp();
-    const {run, ...result} = useAsync<Project[]>();
-    const fetchProjects = useCallback(() => client("projects", {data: clearnObject(param || {})}),[client,param]);
+// export const useProject = (param?: Partial<Project>) => {
+//     const client = useHttp();
+//     const {run, ...result} = useAsync<Project[]>();
+//     const fetchProjects = useCallback(() => client("projects", {data: clearnObject(param || {})}),[client,param]);
     
-    //****fetchProjects() 傳回Promise(any),fetchProjects傳回 () => Promise(any)  callback函數****/
-    //可參考9-5和9-4
-    useEffect(() => {
-        run(fetchProjects(),{
-          retry: fetchProjects
-        } )
+//     //****fetchProjects() 傳回Promise(any),fetchProjects傳回 () => Promise(any)  callback函數****/
+//     //可參考9-5和9-4
+//     useEffect(() => {
+//         run(fetchProjects(),{
+//           retry: fetchProjects
+//         } )
       
-    },[param,run,fetchProjects]);  
-    //run非狀態也非基本類型不可加到依賴,如果要加,要用useMemo和useCallback,見影片10-1 12:00,通常寫自訂義hook,要返回函數時要用useCallback,
-    //方便其他人調用
-    //也可參考:https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/react-optimize-performance-using-memo-usecallback-usememo-a76b6b272df3
+//     },[param,run,fetchProjects]);  
+//     //run非狀態也非基本類型不可加到依賴,如果要加,要用useMemo和useCallback,見影片10-1 12:00,通常寫自訂義hook,要返回函數時要用useCallback,
+//     //方便其他人調用
+//     //也可參考:https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/react-optimize-performance-using-memo-usecallback-usememo-a76b6b272df3
                                                       
-    return result
+//     return result
+// }
+
+export const useProject = (param?: Partial<Project>) => {
+  const client = useHttp();
+  // return useQuery('projects',() => client("projects", {data: param}))
+  //return useQuery<Project[],Error>(['projects', param],() => client("projects", {data: param}))
+  return useQuery<Project[]>(['projects', param],() => client("projects", {data: param}))
+  //改成tuple,字串'projects'是固定不會變,但param會變,只要改變就去執行useQuery去server端取資料
 }
 
 export const useEditProject = () => {
