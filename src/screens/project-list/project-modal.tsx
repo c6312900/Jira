@@ -21,6 +21,7 @@ export const ProjectModal = () => {
             form.resetFields()
             close()
         })
+      
     }
 
     const title = editingProject ? '編輯項目' : '創建項目'

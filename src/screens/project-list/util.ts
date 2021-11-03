@@ -1,6 +1,7 @@
 import { useProject } from 'utils/project';
 import { useMemo } from 'react';
 import { useUrlQueryParam } from 'utils/url';
+import { useSearchParams } from "react-router-dom";
 
 //因為不會包含模板代碼所以使用ts,否則要用tsx
 
@@ -19,14 +20,16 @@ export const useProjectModal = () => {
     const [{editingProjectId}, setEditingProjectId] = useUrlQueryParam([
         "editingProjectId",
     ]);
+    const [_, setUrlParams] = useSearchParams();
     const {data: editingProject, isLoading } = useProject(Number(editingProjectId))
     
     const open = () =>  setProjectCreate({projectCreate: true})
    // const close = () =>  setProjectCreate({projectCreate: undefined})
-    const close = () => {
-        setProjectCreate({projectCreate: undefined});
-        setEditingProjectId({editingProjectId: undefined});
-    } 
+    // const close = () => {
+    //     setProjectCreate({projectCreate: undefined});
+    //     setEditingProjectId({editingProjectId: undefined});
+    // } 
+    const close = () => setUrlParams({ projectCreate: "", editingProjectId: "" });
     const startEdit = (id: number) => setEditingProjectId({editingProjectId: id}) 
     
     return {
