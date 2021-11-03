@@ -4,7 +4,7 @@ import { List } from "screens/project-list/list";
 import { useDebounce, useDocumentTitle} from "../../utils";
 import styled from "@emotion/styled";
 //import { Typography } from "antd";
-import { useProject } from "utils/project";
+import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useUrlQueryParam } from "utils/url";
 //import { useSearchParams } from "react-router-dom";
@@ -43,7 +43,7 @@ export const ProjectListScreen = () => {
     // const [list, setList] = useState([]);
     //const client = useHttp();
    // const {isLoading, error, data: list, retry} = useProject(useDebounce(param,200));
-   const {isLoading, error, data: list } = useProject(useDebounce(param,200));
+   const {isLoading, error, data: list } = useProjects(useDebounce(param,200));
     const { data: users} = useUsers();
 
     // const {run, isLoading, error, data: list} = useAsync<Project[]>();

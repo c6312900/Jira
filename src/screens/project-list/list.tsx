@@ -86,11 +86,12 @@ export const List = ({users,...props }: ListProps) => {
   {
    render(value,project) {
      return <Dropdown overlay= { <Menu>
-       <Menu.Item key={"edit"}  >
+       <Menu.Item key={"edit"}>編輯</Menu.Item >
+       <Menu.Item key={"delete"}>刪除</Menu.Item >
         {/* <ButtonNoPadding type={"link"} onClick={() => props.setProjectModalOpen(true)}>編輯</ButtonNoPadding> */}
         {/* {props.projectButton} */}
        
-        </Menu.Item >
+       
      </Menu>
      } >
        <ButtonNoPadding type={"link"}>...</ButtonNoPadding>
