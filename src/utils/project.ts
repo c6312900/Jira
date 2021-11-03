@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { Project } from "screens/project-list/list";
 //import { clearnObject } from "utils";
 import { useHttp } from "./http";
-import { useAsync } from "./use-async";
+//import { useAsync } from "./use-async";
 
 // export const useProject = (param?: Partial<Project>) => {
 //     const client = useHttp();
@@ -68,7 +68,7 @@ export const useProjects = (param?: Partial<Project>) => {
     const client = useHttp();
     const queryClient = useQueryClient();
     return useMutation(
-      (params: Partial<Project>) => client(`projects/${params.id}` , {
+      (params: Partial<Project>) => client(`projects` , {
         method: 'POST',
         data: params
       }),{
