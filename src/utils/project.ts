@@ -1,9 +1,11 @@
+import { useProjectSearchParams } from './../screens/project-list/util';
 import { useMutation, useQueryClient } from 'react-query';
 //import { useCallback, useEffect } from "react";
 import { useQuery } from "react-query";
 import { Project } from "screens/project-list/list";
 //import { clearnObject } from "utils";
 import { useHttp } from "./http";
+
 //import { useAsync } from "./use-async";
 
 // export const useProject = (param?: Partial<Project>) => {
@@ -53,12 +55,26 @@ export const useProjects = (param?: Partial<Project>) => {
   export const useEditProject = () => {
     const client = useHttp();
     const queryClient = useQueryClient();
+    const [searchParam] = useProjectSearchParams()
+    const queryKey = ['projects',searchParam] 
     return useMutation(
+      //可參考11-6整段
       (params: Partial<Project>) => client(`projects/${params.id}` , {
         method: 'PATCH',
         data: params
       }),{
-        onSuccess: () => queryClient.invalidateQueries('projects')
+       // onSuccess: () => queryClient.invalidateQueries('projects'),
+        onSuccess: () => queryClient.invalidateQueries(queryKey),
+        async onMutate(target) {         
+         const previousItems = queryClient.getQueryData(queryKey)
+         queryClient.setQueryData(queryKey,(old?: Project[]) => {
+               return old?.map(project => project.id === target.id ? {...project, ...target} : project) || []
+         })
+         return {previousItems}
+        },        
+        onError(error, newItem, context) {
+          queryClient.setQueryData(queryKey,(context as {previousItems: Project[] }).previousItems)
+        }
       }
     )
 
