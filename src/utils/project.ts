@@ -1,5 +1,6 @@
-import { useProjectSearchParams } from './../screens/project-list/util';
-import { useMutation, useQueryClient } from 'react-query';
+import { useEditConfig, useAddConfig, useDeleteConfig } from './use-optimistic-options';
+//import { useProjectSearchParams } from './../screens/project-list/util';
+import { QueryKey, useMutation } from 'react-query';
 //import { useCallback, useEffect } from "react";
 import { useQuery } from "react-query";
 import { Project } from "screens/project-list/list";
@@ -52,44 +53,63 @@ export const useProjects = (param?: Partial<Project>) => {
 //       ...asyncResult,
 //     };
 //   };
-  export const useEditProject = () => {
+
+  export const useEditProject = (queryKey: QueryKey) => {
     const client = useHttp();
-    const queryClient = useQueryClient();
-    const [searchParam] = useProjectSearchParams()
-    const queryKey = ['projects',searchParam] 
+  //  const queryClient = useQueryClient();
+  //  const [searchParam] = useProjectSearchParams() //useProjectSearchParams()為了要解耦合useEditProject提至外面,可看11-7 10:25
+  //  const queryKey = ['projects',searchParam] 
     return useMutation(
       //可參考11-6整段
       (params: Partial<Project>) => client(`projects/${params.id}` , {
         method: 'PATCH',
         data: params
-      }),{
-       // onSuccess: () => queryClient.invalidateQueries('projects'),
-        onSuccess: () => queryClient.invalidateQueries(queryKey),
-        async onMutate(target) {         
-         const previousItems = queryClient.getQueryData(queryKey)
-         queryClient.setQueryData(queryKey,(old?: Project[]) => {
-               return old?.map(project => project.id === target.id ? {...project, ...target} : project) || []
-         })
-         return {previousItems}
-        },        
-        onError(error, newItem, context) {
-          queryClient.setQueryData(queryKey,(context as {previousItems: Project[] }).previousItems)
-        }
-      }
+       }),
+       useEditConfig(queryKey)
+      //{
+      //  // onSuccess: () => queryClient.invalidateQueries('projects'),
+      //   onSuccess: () => queryClient.invalidateQueries(queryKey),
+      //   async onMutate(target) {         
+      //    const previousItems = queryClient.getQueryData(queryKey)
+      //    queryClient.setQueryData(queryKey,(old?: Project[]) => {
+      //          return old?.map(project => project.id === target.id ? {...project, ...target} : project) || []
+      //    })
+      //    return {previousItems}
+      //   },        
+      //   onError(error, newItem, context) {
+      //     queryClient.setQueryData(queryKey,(context as {previousItems: Project[] }).previousItems)
+      //   }
+      // }
     )
 
   };
   
-  export const useAddProject = () => {
+  export const useAddProject = (queryKey: QueryKey) => {
     const client = useHttp();
-    const queryClient = useQueryClient();
+   // const queryClient = useQueryClient();
     return useMutation(
       (params: Partial<Project>) => client(`projects` , {
         method: 'POST',
         data: params
-      }),{
-        onSuccess: () => queryClient.invalidateQueries('projects')
-      }
+       }),
+        useAddConfig(queryKey)
+      //{
+      //   onSuccess: () => queryClient.invalidateQueries('projects')
+      // }
+    )
+  };
+
+  export const useDeleteProject = (queryKey: QueryKey) => {
+    const client = useHttp();
+   // const queryClient = useQueryClient();
+    return useMutation(
+      ( {id}:{id:number}) => client(`projects/${id}` , {
+        method: 'DELETE'
+       }),
+        useDeleteConfig(queryKey)
+      //{
+      //   onSuccess: () => queryClient.invalidateQueries('projects')
+      // }
     )
   };
 

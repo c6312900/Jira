@@ -1,3 +1,4 @@
+//import { useAddConfig } from './../../utils/use-optimistic-options';
 import { useProject } from 'utils/project';
 import { useMemo } from 'react';
 import { useUrlQueryParam } from 'utils/url';
@@ -12,6 +13,11 @@ export const useProjectSearchParams = () => {
        useMemo(() => ({...param, personId: Number(param.personId) || undefined}),[param]), 
        setParam] as const
 }
+
+export const useProjectQueryKey = () =>{
+ const [params] = useProjectSearchParams()
+ return ['projects', params]
+} 
 
 export const useProjectModal = () => {
     const [{projectCreate}, setProjectCreate] = useUrlQueryParam([
