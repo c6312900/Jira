@@ -7,8 +7,9 @@ export const useUrlQueryParam = <k extends string>(keys: k[]) => {
 //export const useUrlQueryParam = (keys: string[]) => {
     //返回頁面url中,指定鍵的參數值
     
-    const [searchParams, setSearchParam] = useSearchParams()
-    
+   // const [searchParams, setSearchParam] = useSearchParams()
+   const [searchParams] = useSearchParams()
+   const setUrlSearchParams = useSetUrlSearchParam()
     //reduce() 方法將一個累加器及陣列中每項元素（由左至右）傳入回呼函式，將陣列化為單一值
     //參考https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce
     //將key 例如:name=好手&personid=18 ,合成1個數組 {name:好手,personid:18}
@@ -23,11 +24,12 @@ export const useUrlQueryParam = <k extends string>(keys: k[]) => {
               // iterator
               // iterator: https://codesandbox.io/s/upbeat-wood-bum3j?file=/src/index.js
               //[] 數組 , {} 對象 , map 有部署iterator 可用for...of 遍歷 見8-7 3:00
-              const o = clearnObject({
-               ...Object.fromEntries(searchParams),
-                ...params,
-              }) as URLSearchParamsInit;
-              return setSearchParam(o);
+              // const o = clearnObject({
+              //  ...Object.fromEntries(searchParams),
+              //   ...params,
+              // }) as URLSearchParamsInit;
+              // return setSearchParam(o);
+              return  setUrlSearchParams(params)
             },
     ] as const
     // console.log(searchParams.get('name'))
@@ -39,4 +41,14 @@ export const useUrlQueryParam = <k extends string>(keys: k[]) => {
   //  const a = ['12']
   //  const a = ['12'] as const
 } 
-   
+  
+export const useSetUrlSearchParam = () => {
+  const [searchParams, setSearchParam] = useSearchParams()
+  return  (params: {[key in string]:unknown}) => {
+    const o = clearnObject({
+      ...Object.fromEntries(searchParams),
+       ...params,
+     }) as URLSearchParamsInit;
+     return setSearchParam(o);
+  }
+}

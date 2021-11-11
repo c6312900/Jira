@@ -1,8 +1,8 @@
 //import { useAddConfig } from './../../utils/use-optimistic-options';
 import { useProject } from 'utils/project';
 import { useMemo } from 'react';
-import { useUrlQueryParam } from 'utils/url';
-import { useSearchParams } from "react-router-dom";
+import { useSetUrlSearchParam, useUrlQueryParam } from 'utils/url';
+//import { useSearchParams } from "react-router-dom";
 
 //因為不會包含模板代碼所以使用ts,否則要用tsx
 
@@ -26,7 +26,8 @@ export const useProjectModal = () => {
     const [{editingProjectId}, setEditingProjectId] = useUrlQueryParam([
         "editingProjectId",
     ]);
-    const [_, setUrlParams] = useSearchParams();
+   // const [_, setUrlParams] = useSearchParams();
+   const setUrlParams = useSetUrlSearchParam();
     const {data: editingProject, isLoading } = useProject(Number(editingProjectId))
     
     const open = () =>  setProjectCreate({projectCreate: true})

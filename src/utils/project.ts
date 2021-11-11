@@ -103,7 +103,7 @@ export const useProjects = (param?: Partial<Project>) => {
     const client = useHttp();
    // const queryClient = useQueryClient();
     return useMutation(
-      ( {id}:{id:number}) => client(`projects/${id}` , {
+      ({id}:{id:number}) => client(`projects/${id}` , {
         method: 'DELETE'
        }),
         useDeleteConfig(queryKey)
