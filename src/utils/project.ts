@@ -3,7 +3,7 @@ import { useEditConfig, useAddConfig, useDeleteConfig } from './use-optimistic-o
 import { QueryKey, useMutation } from 'react-query';
 //import { useCallback, useEffect } from "react";
 import { useQuery } from "react-query";
-import { Project } from "screens/project-list/list";
+import { Project } from "types/Project";
 //import { clearnObject } from "utils";
 import { useHttp } from "./http";
 

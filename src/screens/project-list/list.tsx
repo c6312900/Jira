@@ -8,20 +8,10 @@ import dayjs from "dayjs";
 //react-router和react-router-dom關係類似 react 和react-native/react-dom/react-vr....
 //react 核心庫處理虛擬的,邏輯,計算...等例如useEffect,useState...等怎麼去影響dom 見8-3 9:00
 import { Link } from "react-router-dom";
-import { User } from "screens/project-list/search-panel";
+import { User } from "types/User";
 import { useDeleteProject, useEditProject } from "utils/project";
+import { Project } from "../../types/Project";
 import { useProjectModal, useProjectQueryKey } from "./util";
-//import { useProjectModal } from "./util";
-
-export interface Project {
-  id: number;
-  name: string;
-  personId: number;
-  pin: boolean;
-  organization: string;
-  created: number;
-}
-
 //RecordType 表示table 中1筆資料的型別,例如:Project 或 User型別
 //TableProps代表table屬性(Props)的集合
 interface ListProps extends TableProps<Project> {

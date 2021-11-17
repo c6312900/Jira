@@ -23,7 +23,11 @@ export const ProjectModal = () => {
         })
       
     }
-
+    
+    const closeModal = () => {
+        form.resetFields()
+        close()
+    }
     const title = editingProject ? '編輯項目' : '創建項目'
 
     useEffect(() => {
@@ -31,7 +35,13 @@ export const ProjectModal = () => {
     },[editingProject, form])
 
     // return <Drawer onClose={props.onClose} visible={props.projectModalOpen} width={'100%'}></Drawer>
-    return <Drawer forceRender={true} onClose={close} visible={projectModalOpen} width={'100%'}>
+    return <Drawer 
+             forceRender={true} 
+            //  onClose={close} 
+             onClose={closeModal}
+             visible={projectModalOpen} 
+             width={'100%'}
+           >
         <Container>
         {
             isLoading? <Spin size={"large"} /> : <>
