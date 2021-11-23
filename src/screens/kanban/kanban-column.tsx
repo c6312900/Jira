@@ -31,7 +31,6 @@ export const KanbanColumn = ({kanban}:{kanban:Kanban}) => {
           </Card>)}
         </TasksContainer>
     </Container>
-
 }
 
 const Container = styled.div `
