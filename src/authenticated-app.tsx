@@ -133,4 +133,7 @@ z-index: 1;
 const HeaderLeft = styled(Row)``;
 const HeaderRight = styled.div``;
 
-const Main = styled.main``
+const Main = styled.main`
+display: flex;
+overflow: hidden;
+`
