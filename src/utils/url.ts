@@ -13,6 +13,8 @@ export const useUrlQueryParam = <k extends string>(keys: k[]) => {
     //reduce() 方法將一個累加器及陣列中每項元素（由左至右）傳入回呼函式，將陣列化為單一值
     //參考https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce
     //將key 例如:name=好手&personid=18 ,合成1個數組 {name:好手,personid:18}
+    //解釋:例如util.ts內的useTasksModal 使用useUrlQueryParam(['editingTaskId']),透過searchParams.get(key)去url
+    //找editingTaskId的值假設為15,再透過reduce 形成{editingTaskId:15} 這就是...prev
     return [ 
         useMemo(() => keys.reduce((prev,key) => {
           return {...prev, [key]: searchParams.get(key) || ''}

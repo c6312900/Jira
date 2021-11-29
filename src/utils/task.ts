@@ -1,6 +1,7 @@
 import { Task } from './../types/task';
-import { useQuery } from "react-query";
+import { QueryKey, useMutation, useQuery } from "react-query";
 import { useHttp } from "./http";
+import { useAddConfig, useEditConfig } from './use-optimistic-options';
 
 
 export const useTasks = (param?: Partial<Task>) => {
@@ -8,3 +9,35 @@ export const useTasks = (param?: Partial<Task>) => {
     return useQuery<Task[]>(['tasks', param],() => client("tasks", {data: param}))
     //改成tuple,字串'kanbans'固定不會變,但param會變,只要改變就去執行useQuery去server端取資料
   }
+
+export const useAddTask = (queryKey: QueryKey) => {
+    const client = useHttp();
+    return useMutation(
+      (params: Partial<Task>) => client(`tasks` , {
+        method: 'POST',
+        data: params
+       }),
+        useAddConfig(queryKey)
+    )
+};
+
+export const useTask = ((id?: number) => {
+  const client = useHttp();   
+  return useQuery<Task>(
+    ['task',{id}],
+    () => client(`tasks/${id}`),
+    {enabled:!!id}  //!!id 等於Boolean(id)
+  )
+});
+
+export const useEditTask = (queryKey: QueryKey) => {
+  const client = useHttp();
+  return useMutation(
+    //可參考11-6整段
+    (params: Partial<Task>) => client(`tasks/${params.id}` , {
+      method: 'PATCH',
+      data: params
+     }),
+     useEditConfig(queryKey)
+  )
+};

@@ -2,14 +2,14 @@
 import { SearchPanel } from "./search-panel";
 import { List } from "screens/project-list/list";
 import { useDebounce, useDocumentTitle} from "../../utils";
-import styled from "@emotion/styled";
+//import styled from "@emotion/styled";
 //import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useUrlQueryParam } from "utils/url";
 //import { useSearchParams } from "react-router-dom";
 import { useProjectModal, useProjectSearchParams } from "./util";
-import { ButtonNoPadding, ErrorBox, Row } from "components/lib";
+import { ButtonNoPadding, ErrorBox, Row, ScreenContainer } from "components/lib";
 
 //import { Test } from "./test";
 //import { Helmet } from "react-helmet";
@@ -94,7 +94,7 @@ export const ProjectListScreen = () => {
     //useUrlQueryParam(['random']);
     console.log(useUrlQueryParam(['name']));
   //  console.log(useUrlQueryParam(['personid']));
-    return <Container>
+    return <ScreenContainer>
       {/* <Test/> */}
       {/* <Helmet>
       <title>項目列表</title>
@@ -132,7 +132,7 @@ export const ProjectListScreen = () => {
         users={users || []}
         dataSource={list || []}
       />
-    </Container>
+    </ScreenContainer>
 }
 
 //function Component寫法
@@ -143,6 +143,6 @@ ProjectListScreen.whyDidYouRender = false;
 //   static whyDidYouRender = true
 // }
 
-const Container = styled.div`
-  padding: 3.2rem;
-`;
+// const Container = styled.div`
+//   padding: 3.2rem;
+// `;
