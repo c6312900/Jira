@@ -1,9 +1,9 @@
-import { Form, Input, Modal } from "antd"
+import { Button, Form, Input, Modal } from "antd"
 import { useForm } from "antd/lib/form/Form"
 import { TaskTypeSelect } from "components/task-type-select"
 import { UserSelect } from "components/user-select"
 import { useEffect } from "react"
-import { useEditTask } from "utils/task"
+import { useDeleteTask, useEditTask } from "utils/task"
 import { useTasksModal, useTasksQueryKey } from "./util"
 
 const layout = {
@@ -14,6 +14,7 @@ export const TaskModal = () => {
     const [form] = useForm()
     const {editingTaskId,editingTask,close} = useTasksModal() //從url抓取資料
     const {mutateAsync: editTask,isLoading: editLoading }= useEditTask(useTasksQueryKey())
+    const {mutate: deleteTask} = useDeleteTask(useTasksQueryKey())
     const onCancel = () => {
       close()
       form.resetFields()
@@ -23,6 +24,18 @@ export const TaskModal = () => {
     const onOk = async () => {
        await editTask({...editingTask, ...form.getFieldsValue()})
        close()
+    }
+
+    const startDelete = () => {
+      close()
+      Modal.confirm({
+        title: '確定刪除看板嗎?',
+        cancelText: '取消',
+        okText: '確定',
+        onOk() {
+        return  deleteTask({id: Number(editingTaskId)})
+        }
+      })
     }
     
     //當url有變或form的資料有變,要重新改變form的setFieldsValue
@@ -42,6 +55,9 @@ export const TaskModal = () => {
               <TaskTypeSelect/>
            </Form.Item>
        </Form>
+       <div style={{textAlign: 'right'}}>
+        <Button onClick={startDelete} style={{fontSize: '14px'}} size={"small"}>刪除</Button>
+       </div>
     </Modal>
 
 }

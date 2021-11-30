@@ -1,4 +1,4 @@
-import { useDebounce } from "utils";
+//import { useDebounce } from "utils";
 import { useCallback } from 'react';
 import { useUrlQueryParam } from 'utils/url';
 import { useProject } from './../../utils/project';
@@ -30,13 +30,14 @@ export const useTasksSearchParams = () => {
      ]) 
     
     const  projectId= useProjectIdInUrl();
-    const  debouncedName= useDebounce(param.name,200)
+   // const debouncedParam = { ...param, name: useDebounce(param?.name, 200) };
+  //  const  debouncedName= useDebounce(param.name,200)
     return   useMemo(() => ({
         projectId,
         typeId: Number(param.typeId) || undefined,
         processorId: Number(param.processorId) || undefined,
         tagId: Number(param.tagId) || undefined,
-        name: param.name,
+        name: param.name
     }),[projectId, param]);
 
 }
