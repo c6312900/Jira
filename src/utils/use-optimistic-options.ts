@@ -1,6 +1,9 @@
 import { QueryKey, useQueryClient } from "react-query";
 
-export const useConfig = (queryKey: QueryKey, callBack: (target: any , old?: any[]) => any[]) => {
+export const useConfig = (
+    queryKey: QueryKey, 
+    callBack: (target: any , old?: any[]) => any[]
+    ) => {
     const queryClient = useQueryClient()
     return {
         onSuccess: () => queryClient.invalidateQueries(queryKey),
@@ -21,4 +24,6 @@ export const useConfig = (queryKey: QueryKey, callBack: (target: any , old?: any
 
 export const useDeleteConfig = (queryKey: QueryKey) => useConfig(queryKey,(target, old) => old?.filter(item => item.id !== target.id)||[])
 export const useEditConfig = (queryKey: QueryKey) => useConfig(queryKey,(target, old) => old?.map(item => item.id === target.id ? {...item,...target}:item)||[])
-export const useAddConfig = (queryKey: QueryKey) => useConfig(queryKey,(target, old) => old? [...old, target]:[])
+export const useAddConfig = (queryKey: QueryKey) => useConfig(queryKey,(target, old) => {
+                                                                               return old? [...old, target]:[target]})
+export const useReorderConfig = (queryKey: QueryKey) => useConfig(queryKey,(target, old) => old || [])                                                                          
