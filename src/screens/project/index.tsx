@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import {Route, Routes, Navigate, useLocation} from "react-router"
 import { KanbanScreen } from "screens/kanban"
-import { EpicScreen } from "screens/Epic"
+import { EpicScreen } from "screens/epic"
 import styled from "@emotion/styled"
 import { Menu } from "antd"
 
@@ -51,4 +51,5 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 16rem 1fr;
   overflow: hidden;
+  width: 100%
 `;
