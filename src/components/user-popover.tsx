@@ -1,35 +1,33 @@
 import styled from "@emotion/styled"
 import { Divider, List, Popover, Typography } from "antd"
-import { useProjectModal } from "screens/project-list/util";
-import { useProjects } from "utils/project"
-import { ButtonNoPadding } from "./lib";
+import { useUsers } from "utils/user";
+
                              
                               //props:{setProjectModalOpen: (isOpen: boolean) => void}
 //export const ProjectPopover = (props:{projectButton: JSX.Element}) => {
-export const ProjectPopover = () => {
-    const {open} = useProjectModal()
-    const {data: projects, refetch} = useProjects();
-    const pinnedProjects = projects?.filter((project) => project.pin)
+export const UserPopover = () => {
+    const {data: users, refetch} = useUsers();
+  
     const content = <ContentContainer>
-        <Typography.Text type={"secondary"}>收藏項目</Typography.Text>
+        <Typography.Text type={"secondary"}>組員列表</Typography.Text>
         <List>
-           {pinnedProjects?.map(project => 
-           <List.Item key={project.id}>
-               <List.Item.Meta title={project.name}/>
-           </List.Item>) }
+           {users?.map((user) => 
+           <List.Item key={user.id}>
+               <List.Item.Meta title={user.name}/>
+           </List.Item>)}
         </List>
         <Divider/>
-        <ButtonNoPadding 
+        {/* <ButtonNoPadding 
         //    onClick={() => props.setProjectModalOpen(true)}
            onClick={open} 
            type={"link"}>
               創建項目
-        </ButtonNoPadding>
+        </ButtonNoPadding> */}
         {/* {props.projectButton} */}
     </ContentContainer>
     return <Popover onVisibleChange={() => refetch()} placement={"bottom"} content={content}>
         <span>
-         項目
+         組員
         </span>
     </Popover>
 }
