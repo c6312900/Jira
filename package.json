@@ -36,7 +36,9 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build -r https://github.com/c6312900/c6312900.github.io.git -b main" 
   },
   "eslintConfig": {
     "extends": [
@@ -60,7 +62,8 @@
     "@types/qs": "^6.9.6",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-helmet": "^6.1.2",
-    "@welldone-software/why-did-you-render": "^6.2.0"
+    "@welldone-software/why-did-you-render": "^6.2.0",
+    "gh-pages": "^3.2.3"
   },
   "msw": {
     "workerDirectory": "public"
