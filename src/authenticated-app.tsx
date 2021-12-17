@@ -24,8 +24,10 @@ import { UserPopover } from "components/user-popover";
  *
  */
 
+/* eslint import/no-anonymous-default-export: [2, {"allowArrowFunction": true}] */
+ export default () => {
 //10-3 10:00 prop drilling(下鑽) 沒有解耦合
-export const AuthenticatedApp = () => {
+//export const AuthenticatedApp = () => {
    //  const [projectModalOpen, setProjectModalOpen] = useState(false)
     // const value: any = undefined  //
     return (

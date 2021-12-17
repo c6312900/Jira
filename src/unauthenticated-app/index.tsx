@@ -10,7 +10,9 @@ import { useDocumentTitle } from "utils";
 import { ErrorBox } from "components/lib";
 //import {Helmet} from "react-helmet";
 
-export const UnauthenticatedApp = () => {
+/* eslint import/no-anonymous-default-export: [2, {"allowArrowFunction": true}] */
+export default () => {
+//export const UnauthenticatedApp = () => {
     const [isRegister, setIsRegister] = useState(false);
     const [error, setError] = useState<Error | null>(null);
     useDocumentTitle('請登入或註冊');
